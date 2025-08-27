@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>おいしいフードショップ</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: Arial, sans-serif;
+            background-image: url('./background.jpg');
+            background-size: 300px 300px;
+            background-repeat: repeat;
+            background-position: top left;
+            min-height: 100vh;
+            position: relative;
+        }
+        /* Background overlay */
+        
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(255, 248, 240, 0.3);
+            z-index: -1;
+            pointer-events: none;
+        }
+        
+        header {
+            padding: 30px 20px;
+            text-align: center;
+            color: white;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+            position: relative;
+            overflow: hidden;
+        }
+        /* Header overlay */
+        
+        header::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, rgba(255, 99, 71, 0.8) 0%, rgba(255, 69, 0, 0.8) 100%);
+            z-index: 1;
+        }
+        
+        @keyframes float {
+            0% {
+                transform: translate(-50%, -50%) rotate(0deg);
+            }
+            100% {
+                transform: translate(-50%, -50%) rotate(360deg);
+            }
+        }
+        
+        header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        nav {
+            position: relative;
+            z-index: 2;
+        }
+        
+        nav a {
+            margin: 0 20px;
+            color: white;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s ease;
+            padding: 8px 16px;
+            border-radius: 20px;
+        }
+        
+        nav a:hover {
+            background-color: rgba(255, 255, 255, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .products {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            padding: 40px 20px;
+            position: relative;
+        }
+        /* Products section overlay */
+        
+        .products::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.4);
+            pointer-events: none;
+        }
+        
+        .product {
+            border: 1px solid #ddd;
+            border-radius: 15px;
+            margin: 15px;
+            padding: 20px;
+            width: 240px;
+            text-align: center;
+            background: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .product::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle, rgba(255, 99, 71, 0.05) 0%, transparent 70%);
+            transform: scale(0);
+            transition: transform 0.5s ease;
+        }
+        
+        .product:hover::before {
+            transform: scale(1);
+        }
+        
+        .product:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .product img {
+            width: 100%;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 10px;
+            transition: transform 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product:hover img {
+            transform: scale(1.05);
+        }
+        
+        .product h3 {
+            margin: 15px 0 10px 0;
+            color: #333;
+            font-size: 1.3em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .product p {
+            margin: 8px 0;
+            color: #666;
+            position: relative;
+            z-index: 2;
+            font-weight: bold;
+            color: #ff6347;
+            font-size: 1.2em;
+        }
+        
+        .product button {
+            background: linear-gradient(135deg, #ff6347 0%, #ff4500 100%);
+            border: none;
+            padding: 12px 16px;
+            color: white;
+            cursor: pointer;
+            margin: 8px 5px;
+            border-radius: 25px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+            box-shadow: 0 4px 15px rgba(255, 99, 71, 0.3);
+        }
+        
+        .product button:hover {
+            background: linear-gradient(135deg, #e5533d 0%, #dc3912 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 99, 71, 0.4);
+        }
+        
+        footer {
+            color: white;
+            text-align: center;
+            padding: 20px;
+            margin-top: 40px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        footer::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            z-index: 1;
+        }
+        
+        footer p {
+            position: relative;
+            z-index: 2;
+        }
+        /* Menu section styles */
+        
+        .menu-section {
+            padding: 40px 20px;
+            text-align: center;
+            position: relative;
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            animation: slideDown 0.5s ease;
+        }
+        
+        .menu-section::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.9);
+            pointer-events: none;
+        }
+        
+        .menu-section h2 {
+            color: #ff6347;
+            margin-bottom: 30px;
+            font-size: 2.5em;
+            position: relative;
+            z-index: 2;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .menu-images {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 30px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .menu-item {
+            flex: 1;
+            min-width: 300px;
+            max-width: 400px;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 15px;
+            padding: 20px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+        }
+        
+        .menu-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .menu-item img:hover {
+            transform: scale(1.05);
+        }
+        
+        .menu-item h3 {
+            color: #333;
+            margin: 15px 0;
+            font-size: 1.5em;
+        }
+        
+        .close-menu-btn {
+            background: linear-gradient(135deg, #ff6347 0%, #ff4500 100%);
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 20px 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(255, 99, 71, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .close-menu-btn:hover {
+            background: linear-gradient(135deg, #e5533d 0%, #dc3912 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(255, 99, 71, 0.4);
+        }
+        
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        .store-info {
+            text-align: center;
+            padding: 40px 20px;
+            margin: 20px;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .store-info::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(255, 255, 255, 0.7);
+            pointer-events: none;
+        }
+        
+        .store-info h2 {
+            color: #333;
+            margin-bottom: 20px;
+            font-size: 1.8em;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .store-info p {
+            color: #666;
+            margin: 10px 0;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .social-icons a {
+            margin: 0 10px;
+            color: #ff6347;
+            text-decoration: none;
+            font-size: 18px;
+            font-weight: bold;
+            transition: color 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .social-icons a:hover {
+            color: #ff4500;
+        }
+        
+        .social-icons button {
+            margin: 0 8px;
+            padding: 8px 15px;
+            cursor: pointer;
+            border-radius: 20px;
+            border: none;
+            background: linear-gradient(135deg, #555 0%, #444 100%);
+            color: white;
+            transition: all 0.3s ease;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .social-icons button:hover {
+            background: linear-gradient(135deg, #777 0%, #666 100%);
+            transform: translateY(-2px);
+        }
+        
+        .reservation button {
+            background: linear-gradient(135deg, #28a745 0%, #20c997 100%);
+            border: none;
+            padding: 12px 20px;
+            color: white;
+            border-radius: 25px;
+            cursor: pointer;
+            margin: 8px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 15px rgba(40, 167, 69, 0.3);
+            position: relative;
+            z-index: 2;
+        }
+        
+        .reservation button:hover {
+            background: linear-gradient(135deg, #218838 0%, #1e7e34 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(40, 167, 69, 0.4);
+        }
+        /* Responsive design */
+        
+        @media (max-width: 768px) {
+            header h1 {
+                font-size: 2em;
+            }
+            nav a {
+                margin: 0 10px;
+                font-size: 1em;
+            }
+            .product {
+                width: calc(100% - 30px);
+                max-width: 300px;
+            }
+            .store-info {
+                margin: 10px;
+                padding: 20px;
+            }
+        }
+    </style>
+</head>
+
+<body>
+
+    <header>
+        <h1>おいしいフードショップ</h1>
+        <nav>
+            <a href="#">ホーム</a>
+            <a href="#menuSection">メニュー</a>
+            <a href="#contact">お問い合わせ</a>
+            <a href="#reservation">予約</a>
+        </nav>
+    </header>
+
+    <section class="products">
+        <div class="product">
+            <img src="./xoailac.jpg" alt="Xoài Lắc">
+            <h3>Xoài Lắc</h3>
+            <p>¥600</p>
+            <button onclick="callOrder('Xoài Lắc')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./khoaitaylacphomai.jpg" alt="Khoai Tây Lắc Phô Mai">
+            <h3>Khoai Tây Lắc Phô Mai</h3>
+            <p>¥500</p>
+            <button onclick="callOrder('Khoai Tây Lắc Phô Mai')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./setanvat.jpg" alt="Set ăn vặt">
+            <h3>Set ăn vặt</h3>
+            <p>¥1000</p>
+            <button onclick="callOrder('Set ăn vặt')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./banhminuongmuoiot.jpg" alt="Bánh mì nướng muối ớt">
+            <h3>Bánh mì nướng muối ớt</h3>
+            <p>¥650</p>
+            <button onclick="callOrder('Bánh mì nướng muối ớt')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./comcuonchien.jpg" alt="Cơm cuộn chiên">
+            <h3>Cơm cuộn chiên</h3>
+            <p>¥650</p>
+            <button onclick="callOrder('Cơm cuộn chiên')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./banhtrangcuon.jpg" alt="Bánh tráng cuốn">
+            <h3>Bánh tráng cuốn</h3>
+            <p>¥600</p>
+            <button onclick="callOrder('Bánh tráng cuốn')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./banhtrangtron.jpg" alt="Bánh tráng trộn">
+            <h3>Bánh tráng trộn</h3>
+            <p>¥700</p>
+            <button onclick="callOrder('Bánh tráng trộn')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./changasotthai.jpg" alt="Chân gà sốt thái">
+            <h3>Chân gà sốt thái</h3>
+            <p>¥900</p>
+            <button onclick="callOrder('Chân gà sốt thái')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./banhtrangnuong.jpg" alt="Bánh tráng nướng">
+            <h3>Bánh tráng nướng</h3>
+            <p>¥600</p>
+            <button onclick="callOrder('Bánh tráng nướng')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./khoailangken.jpg" alt="Khoai lang kén">
+            <h3>Khoai lang kén</h3>
+            <p>¥600</p>
+            <button onclick="callOrder('Khoai lang kén')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./changaxatac.jpg" alt="Chân gà xả tắc">
+            <h3>Chân gà xả tắc</h3>
+            <p>¥700</p>
+            <button onclick="callOrder('Chân gà xả tắc')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+        <div class="product">
+            <img src="./micay.jpg" alt="Mì cay">
+            <h3>Mì cay</h3>
+            <p>Mì cay hải sản 850y</p>
+            <p>Mì cay bò 850y</p>
+            <p>Mì cay thập cẩm 950y</p>
+            <button onclick="callOrder('Mì cay')">電話で注文</button>
+            <button onclick="window.open('https://www.facebook.com/profile.php?id=100090983301872&mibextid=wwXIfr&rdid=maWtiLirauRii11w&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1a4ubXtL5G%2F%3Fmibextid%3DwwXIfr#','_blank')">オンライン注文</button>
+        </div>
+    </section>
+    <section id="menuSection" class="menu-section">
+        <h2>メニュー</h2>
+        <div class="menu-images">
+            <div class="menu-item">
+                <h3>Món mặn</h3>
+                <img src="./menuman.jpg" alt="Món mặn">
+            </div>
+            <div class="menu-item">
+                <h3>Món nước</h3>
+                <img src="./menunuoc.jpg" alt="Món nước">
+            </div>
+        </div>
+    </section>
+    <section class="store-info" id="contact">
+        <h2>店舗情報</h2>
+        <p>住所: 103 ビール, N, １丁目-１０-23 中津口 小倉北区 北九州市 福岡県 802-0018</p>
+        <p>電話: 07090251578</p>
+        <p>営業時間: 11:00 - 22:00</p>
+        <p>配達可能エリア: 店舗周辺1km以内</p>
+
+        <div class="social-icons">
+            <a href="https://www.facebook.com/YOUR_PAGE" target="_blank">Facebook</a>
+            <button onclick="copyLink('https://www.facebook.com/share/1a4ubXtL5G/?mibextid=wwXIfr')">コピー</button>
+
+            <a href="https://www.tiktok.com/@YOUR_PAGE" target="_blank">TikTok</a>
+            <button onclick="copyLink('https://www.tiktok.com/@peoodnhatviet?_t=ZS-8zALvKcDJZJ&_r=1')">コピー</button>
+        </div>
+    </section>
+
+    <section class="store-info reservation" id="reservation">
+        <h2>ご来店・予約・オンライン注文</h2>
+        <button onclick="window.open('https://maps.app.goo.gl/23PbMkCnUQSJfWAx6?g_st=com.google.maps.preview.copy','_blank')">地図で見る</button>
+        <button onclick="window.location.href='tel:07090251578'">電話で注文</button>
+        <button onclick="window.open('LINK_GOOGLE_FORM','_blank')">オンライン注文</button>
+        <button onclick="reserve()">席の予約</button>
+    </section>
+
+    <footer>
+        <p>&copy; 2025 おいしいフードショップ</p>
+    </footer>
+
+    <script>
+        function callOrder(item) {
+            alert(item + " を注文するには、090-1234-5678 にお電話ください。");
+        }
+
+        function reserve() {
+            alert("予約するには、090-1234-5678 にお電話ください。");
+        }
+
+        function copyLink(link) {
+            navigator.clipboard.writeText(link).then(function() {
+                alert('リンクをコピーしました: ' + link);
+            }, function(err) {
+                alert('コピーに失敗しました');
+            });
+        }
+    </script>
+
+</body>
+
+</html>
